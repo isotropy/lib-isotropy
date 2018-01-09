@@ -1,0 +1,22 @@
+{
+  "name": "isotropy",
+  "version": "10.0.0",
+  "author": "Isotropy Team<isotropy@agilehead.com>",
+  "contributors": ["Jeswin Kumar<jeswinpk@agilehead.com>"],
+  "scripts": {
+    "build": "./build.sh",
+    "test": "mocha dist/test/test.js",
+    "debug": "mocha dist/test/test.js --debug-brk"
+  },
+  "main": "dist/isotropy.js",
+  "types": "dist/isotropy.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^8.0.57",
+    "@types/should": "^11.2.0",
+    "mocha": "*",
+    "should": "*"
+  },
+  "license": "MIT"
+}
