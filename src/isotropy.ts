@@ -3,8 +3,12 @@ import build from "./commands/build";
 import init from "./commands/init";
 import run from "./commands/run";
 
+type Commands = {
+  [key: string]: (args: string[]) => void;
+};
+
 if (process.argv.length > 2) {
-  const commands = {
+  const commands : Commands = {
     help,
     build,
     init,
@@ -14,5 +18,5 @@ if (process.argv.length > 2) {
   const command = process.argv[2];
   commands[command](process.argv.slice(3));
 } else {
-  console.log("Missing argument. Type 'isotropy help' for help.")
+  console.log("Missing argument. Type 'isotropy help' for help.");
 }
