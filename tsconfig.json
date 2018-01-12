@@ -11,6 +11,9 @@
     ],
     "sourceMap": true,
     "strict": true,
+    "types": [
+      "node"
+    ],
     "declaration": true
   },
   "include": [

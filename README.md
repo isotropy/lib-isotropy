@@ -44,6 +44,7 @@ version: "1.0.0"
 git: https://github.com/isotropy/simple-todos
 servers:
   - name: server
+    nodes: 2
     type: http
     build:
       - static
@@ -57,6 +58,7 @@ servers:
         type: static
         path: /static
   - name: auth-server
+    nodes: 1
     type: http
     build:
       - auth-server
