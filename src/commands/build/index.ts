@@ -25,6 +25,7 @@ export async function buildService(
   const subdir = "isotropy_build_" + Date.now();
   const dir = path.join(tmpdir, subdir);
 
+  const serviceConfig = getService(service, config);
   
   
   return {
