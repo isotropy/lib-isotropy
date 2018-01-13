@@ -12,8 +12,11 @@
   },
   "main": "dist/isotropy.js",
   "types": "dist/isotropy.d.ts",
-  "dependencies": {},
+  "dependencies": {
+    "js-yaml": "^3.10.0"
+  },
   "devDependencies": {
+    "@types/js-yaml": "^3.10.1",
     "@types/mocha": "^2.2.44",
     "@types/node": "^9.3.0",
     "@types/should": "^11.2.0",

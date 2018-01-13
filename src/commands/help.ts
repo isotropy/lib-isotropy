@@ -1,3 +1,3 @@
-export default function run(args: string[]) {
+export async function run(args: string[]) {
   
 }

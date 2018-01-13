@@ -11,7 +11,7 @@ npm i -g isotropy
 Initialize a project
 
 ```bash
-isotropy init <dir>
+isotropy init
 ```
 
 Create a project from a template
@@ -42,7 +42,7 @@ name: Simple Todos
 schema: "1.0"
 version: "1.0.0"
 git: https://github.com/isotropy/simple-todos
-servers:
+services:
   - name: server
     nodes: 2
     type: http
@@ -67,14 +67,14 @@ servers:
         type: nodejs
         main: /server/index.js
 builds:
-  static:
+  - name: static
     type: copy
     dest: /static
-  client:
+  - name: client
     type: typescript
     bundle: yes
     output: /static/client.js
-  server:
+  - name: server
     type: typescript
     output: /server  
     connections:
@@ -87,7 +87,7 @@ builds:
       - type: redis
         path: ./redis.ts
         db: todoscache
-  auth-server:
+  - name: auth-server
     type: typescript
     output: /auth-server  
     connections:
