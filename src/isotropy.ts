@@ -11,6 +11,7 @@ export interface ServiceConfig {
 }
 
 export interface HttpServiceLocation {
+  type: string;
   location: string;
 }
 
@@ -29,7 +30,7 @@ export interface HttpServiceConfig extends ServiceConfig {
 }
 
 export interface BuildConfig {
-  name: string;
+  type: string;
 }
 
 export interface StaticBuild extends BuildConfig {
@@ -61,8 +62,13 @@ export interface TypeScriptBuild extends BuildConfig {
   type: "typescript";
   output: string;
   bundle?: boolean;
-  connections?: ConnectionConfig[];
 }
+
+export interface ModuleConfig {
+  name: string,
+  build: BuildConfig,
+  connections?: ConnectionConfig
+} 
 
 export type IsotropyConfig = {
   name: string;
@@ -70,8 +76,12 @@ export type IsotropyConfig = {
   version: string;
   git: string;
   services: ServiceConfig[];
-  builds: BuildConfig[];
+  modules: ModuleConfig[];
 };
+
+export interface BuildPlugin {
+  run() : void
+}
 
 type Commands = {
   [key: string]: (args: string[]) => void;

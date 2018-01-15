@@ -8,18 +8,22 @@ npm i -g isotropy
 
 ### Commands
 
-Initialize a project
+Initialize a project. The directory must not exist.
 
 ```bash
-isotropy init
+isotropy init <dir>
 ```
 
-Create a project from a template
-
-Run a project in dev mode locally.
+Run a project from the current directory in dev mode locally.
 
 ```bash
 isotropy run
+```
+
+Run a project from a specific directory.
+
+```bash
+isotropy run <dir>
 ```
 
 Deploy a Project to the Cloud. The Cloud must implement Isotropy Deployment Specification 1.0 APIs.
@@ -29,10 +33,16 @@ By default, it is set to www.looptype.com. To change the defaults, edit cloud.js
 isotropy deploy
 ```
 
+You can also specify a directory
+
+```bash
+isotropy deploy <dir>
+```
+
 Deploy to a specific cloud (as defined in cloud.json) with:
 
 ```bash
-isotropy deploy <cloud_name>
+isotropy deploy <dir> -c <cloud_name>
 ```
 
 ### Example YAML File
@@ -66,32 +76,36 @@ services:
       - location: /
         type: nodejs
         main: /server/index.js
-builds:
+modules:
   - name: static
-    type: copy
-    dest: /static
+    build:
+      type: copy
+      dest: /static
   - name: client
-    type: typescript
-    bundle: yes
-    output: /static/client.js
+    build:
+      type: typescript
+      bundle: yes
+      output: /static/client.js
   - name: server
-    type: typescript
-    output: /server  
+    build:
+      type: typescript
+      output: /server  
     connections:
       - type: webdisk
-        path: ./disk.ts
+        path: /src/disk.ts
         disk: todos
       - type: postgres
-        path: ./db.ts
+        path: /src/db.ts
         db: todosdb
       - type: redis
-        path: ./redis.ts
+        path: /src/redis.ts
         db: todoscache
   - name: auth-server
-    type: typescript
-    output: /auth-server  
+    build:
+      type: typescript
+      output: /auth-server  
     connections:
       - type: postgres
-        path: ./db.ts
+        path: /src/db.ts
         db: authdb
 ```
