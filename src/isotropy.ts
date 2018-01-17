@@ -7,7 +7,7 @@ export interface ServiceConfig {
   name: string;
   nodes?: number;
   type: string;
-  build: string[];
+  modules: string[]
 }
 
 export interface HttpServiceLocation {
@@ -29,13 +29,20 @@ export interface HttpServiceConfig extends ServiceConfig {
   locations: HttpServiceLocation[];
 }
 
-export interface BuildConfig {
+export interface BuildTask {
   type: string;
 }
 
-export interface StaticBuild extends BuildConfig {
-  type: "static";
+export interface CopyTask extends BuildTask {
+  type: "copy";
+  source?: string;
   dest: string;
+}
+
+export interface TypeScriptCompileTask extends BuildTask {
+  type: "typescript";
+  output: string;
+  bundle?: boolean;
 }
 
 export interface ConnectionConfig {}
@@ -58,15 +65,9 @@ export interface RedisConnection extends ConnectionConfig {
   db: string;
 }
 
-export interface TypeScriptBuild extends BuildConfig {
-  type: "typescript";
-  output: string;
-  bundle?: boolean;
-}
-
 export interface ModuleConfig {
   name: string,
-  build: BuildConfig,
+  tasks: BuildTask[],
   connections?: ConnectionConfig
 } 
 

@@ -24,18 +24,15 @@ function getModule(module: string, config: IsotropyConfig) {
 }
 
 export async function buildService(
+  root: string,
   service: string,
   config: IsotropyConfig
 ): Promise<BuildResult> {
   //We start by creating temporary space for the build.
-  const tmpdir = os.tmpdir();
-  const subdir = "isotropy_build_" + Date.now();
-  const root = path.join(tmpdir, subdir);
-
   const serviceConfig = getService(service, config);
 
-  for (const module in serviceConfig.build) {
-    await buildModule(source, module, root, config);
+  for (const module in serviceConfig.modules) {
+    await buildModule(root, module, config);
   }
 
   return {
@@ -44,18 +41,19 @@ export async function buildService(
 }
 
 async function getBuildPlugin(type: string): Promise<BuildPlugin> {
-  return;
+  return undefined as any;
 }
 
 async function buildModule(
-  source: string,
-  moduleName: string,
   root: string,
+  moduleName: string,
   config: IsotropyConfig
 ) {
   const module = getModule(moduleName, config);
-  const plugin = await getBuildPlugin(module.build.type);
-  plugin.run();
+  for (const task of module.tasks) {
+    const plugin = await getBuildPlugin(task.type);
+    plugin.run();    
+  }
 }
 
 export async function run(args: string[]) {}

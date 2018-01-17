@@ -56,56 +56,53 @@ services:
   - name: server
     nodes: 2
     type: http
-    build:
+    modules:
       - static
       - client
       - server
     locations:
       - location: /
         type: nodejs
-        main: /server/index.js
+        main: server/dist/index.js
       - location: /static
         type: static
-        path: /static
+        path: static
   - name: auth-server
     nodes: 1
     type: http
-    build:
+    modules:
       - auth-server
     locations:
       - location: /
         type: nodejs
-        main: /server/index.js
+        main: auth-server/dist/index.js
 modules:
   - name: static
-    build:
-      type: copy
-      dest: /static
   - name: client
-    build:
-      type: typescript
-      bundle: yes
-      output: /static/client.js
+    tasks:
+      - type: typescript
   - name: server
-    build:
-      type: typescript
-      output: /server  
+    tasks:
+      - type: copy
+        extensions:
+          - js
+        dest: dist
+      - type: typescript
     connections:
       - type: webdisk
-        path: /src/disk.ts
+        path: src/disk.ts
         disk: todos
       - type: postgres
-        path: /src/db.ts
+        path: src/db.ts
         db: todosdb
       - type: redis
-        path: /src/redis.ts
+        path: src/redis.ts
         db: todoscache
   - name: auth-server
-    build:
+    tasks:
       type: typescript
-      output: /auth-server  
     connections:
       - type: postgres
-        path: /src/db.ts
+        path: src/db.ts
         db: authdb
 ```
