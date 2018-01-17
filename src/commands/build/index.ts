@@ -3,7 +3,7 @@ import os from "os";
 import path from "path";
 import exception from "../../exception";
 
-import { IsotropyConfig, BuildPlugin } from "../../isotropy";
+import { IsotropyConfig, TaskPlugin } from "../../isotropy";
 
 export type BuildResult = {
   root: string;
@@ -40,8 +40,9 @@ export async function buildService(
   };
 }
 
-async function getBuildPlugin(type: string): Promise<BuildPlugin> {
-  return undefined as any;
+async function getTaskPlugin(type: string): Promise<TaskPlugin> {
+  return type === "copy"
+    ? 
 }
 
 async function buildModule(
@@ -51,7 +52,7 @@ async function buildModule(
 ) {
   const module = getModule(moduleName, config);
   for (const task of module.tasks) {
-    const plugin = await getBuildPlugin(task.type);
+    const plugin = await getTaskPlugin(task.type);
     plugin.run();    
   }
 }

@@ -80,7 +80,7 @@ export type IsotropyConfig = {
   modules: ModuleConfig[];
 };
 
-export interface BuildPlugin {
+export interface TaskPlugin {
   run() : void
 }
 
