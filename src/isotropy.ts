@@ -7,7 +7,7 @@ export interface ServiceConfig {
   name: string;
   nodes?: number;
   type: string;
-  modules: string[]
+  modules: string[];
 }
 
 export interface HttpServiceLocation {
@@ -31,12 +31,6 @@ export interface HttpServiceConfig extends ServiceConfig {
 
 export interface BuildTask {
   type: string;
-}
-
-export interface CopyTask extends BuildTask {
-  type: "copy";
-  source?: string;
-  dest: string;
 }
 
 export interface TypeScriptCompileTask extends BuildTask {
@@ -66,10 +60,9 @@ export interface RedisConnection extends ConnectionConfig {
 }
 
 export interface ModuleConfig {
-  name: string,
-  tasks: BuildTask[],
-  connections?: ConnectionConfig
-} 
+  name: string;
+  connections?: ConnectionConfig[];
+}
 
 export type IsotropyConfig = {
   name: string;
@@ -80,12 +73,14 @@ export type IsotropyConfig = {
   modules: ModuleConfig[];
 };
 
+export type Command = (args: string[]) => Promise<void>;
+
 export interface TaskPlugin {
-  run() : void
+  run: Command;
 }
 
 type Commands = {
-  [key: string]: (args: string[]) => void;
+  [key: string]: Command;
 };
 
 if (process.argv.length > 2) {
@@ -95,8 +90,6 @@ if (process.argv.length > 2) {
     init: init.run,
     run: run.run
   };
-
-  //Read the config
 
   const command = process.argv[2];
   commands[command](process.argv.slice(3));

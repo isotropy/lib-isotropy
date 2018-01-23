@@ -13,8 +13,9 @@
   "main": "dist/isotropy.js",
   "types": "dist/isotropy.d.ts",
   "dependencies": {
+    "@types/js-yaml": "^3.10.1",
     "js-yaml": "^3.10.0",
-    "@types/js-yaml": "^3.10.1"
+    "koa": "^2.4.1"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.44",

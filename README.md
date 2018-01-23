@@ -79,7 +79,7 @@ services:
 modules:
   - name: static
   - name: client
-  - name: server
+  - name: server    
     connections:
       - type: webdisk
         path: src/disk.ts

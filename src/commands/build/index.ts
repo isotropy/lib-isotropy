@@ -41,8 +41,7 @@ export async function buildService(
 }
 
 async function getTaskPlugin(type: string): Promise<TaskPlugin> {
-  return type === "copy"
-    ? 
+  
 }
 
 async function buildModule(
