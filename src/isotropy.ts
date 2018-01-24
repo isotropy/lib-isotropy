@@ -1,7 +1,17 @@
 import * as help from "./commands/help";
 import * as build from "./commands/build";
-import * as init from "./commands/init";
 import * as run from "./commands/run";
+import * as config from "./config";
+import yargs = require("yargs-parser");
+
+export interface Arguments {
+  /** Non-option arguments */
+  _: string[];
+  /** The script name or node command */
+  $0: string;
+  /** All remaining options */
+  [argName: string]: any;
+}
 
 export interface ServiceConfig {
   name: string;
@@ -59,8 +69,13 @@ export interface RedisConnection extends ConnectionConfig {
   db: string;
 }
 
+export interface BuildConfig {
+  type: string
+}
+
 export interface ModuleConfig {
   name: string;
+  builds: BuildConfig[]
   connections?: ConnectionConfig[];
 }
 
@@ -73,7 +88,7 @@ export type IsotropyConfig = {
   modules: ModuleConfig[];
 };
 
-export type Command = (args: string[]) => Promise<void>;
+export type Command = (args: Arguments, cwd: string) => Promise<void>;
 
 export interface TaskPlugin {
   run: Command;
@@ -83,16 +98,19 @@ type Commands = {
   [key: string]: Command;
 };
 
-if (process.argv.length > 2) {
-  const commands: Commands = {
-    help: help.run,
-    build: build.run,
-    init: init.run,
-    run: run.run
-  };
+export default async function(args: string[], cwd: string) {
+  if (args.length) {
+    const commands: Commands = {
+      help: help.run,
+      build: build.run,
+      run: run.run
+    };
+  
+    const command = args[0];
 
-  const command = process.argv[2];
-  commands[command](process.argv.slice(3));
-} else {
-  console.log("Missing argument. Type 'isotropy help' for help.");
+    commands[command](yargs(args), cwd);
+  } else {
+    console.log("Missing argument. Type 'isotropy help' for help.");
+  }  
 }
+

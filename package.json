@@ -14,8 +14,11 @@
   "types": "dist/isotropy.d.ts",
   "dependencies": {
     "@types/js-yaml": "^3.10.1",
+    "@types/koa": "^2.0.43",
+    "isotropy-build-typescript": "^0.0.1",
     "js-yaml": "^3.10.0",
-    "koa": "^2.4.1"
+    "koa": "^2.4.1",
+    "yargs-parser": "^9.0.2"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.44",

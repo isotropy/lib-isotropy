@@ -79,7 +79,11 @@ services:
 modules:
   - name: static
   - name: client
-  - name: server    
+    build:
+      - type: typescript
+  - name: server
+    build:
+      - type: typescript
     connections:
       - type: webdisk
         path: src/disk.ts
@@ -91,6 +95,8 @@ modules:
         path: src/redis.ts
         db: todoscache
   - name: auth-server
+    build:
+      - type: typescript
     connections:
       - type: postgres
         path: src/db.ts

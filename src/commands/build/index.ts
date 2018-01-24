@@ -1,59 +1,49 @@
 import fs from "fs";
 import os from "os";
 import path from "path";
+import { read } from "../../config";
 import exception from "../../exception";
-
-import { IsotropyConfig, TaskPlugin } from "../../isotropy";
-
-export type BuildResult = {
-  root: string;
-};
-
-function getService(service: string, config: IsotropyConfig) {
-  return (
-    config.services.find(x => x.name === service) ||
-    exception(`The service ${service} was not found.`)
-  );
-}
-
-function getModule(module: string, config: IsotropyConfig) {
-  return (
-    config.modules.find(x => x.name === module) ||
-    exception(`The module ${module} was not found.`)
-  );
-}
-
-export async function buildService(
-  root: string,
-  service: string,
-  config: IsotropyConfig
-): Promise<BuildResult> {
-  //We start by creating temporary space for the build.
-  const serviceConfig = getService(service, config);
-
-  for (const module in serviceConfig.modules) {
-    await buildModule(root, module, config);
-  }
-
-  return {
-    root
-  };
-}
-
-async function getTaskPlugin(type: string): Promise<TaskPlugin> {
-  
-}
+import importModule from "../../import-module";
+import { IsotropyConfig, TaskPlugin, BuildConfig, Arguments } from "../../isotropy";
 
 async function buildModule(
-  root: string,
   moduleName: string,
+  dir: string,
   config: IsotropyConfig
 ) {
-  const module = getModule(moduleName, config);
-  for (const task of module.tasks) {
-    const plugin = await getTaskPlugin(task.type);
-    plugin.run();    
+  const module =
+    config.modules.find(m => m.name === moduleName) ||
+    exception(`The module ${moduleName} was not found.`);
+
+  async function build(build: BuildConfig) {
+    const buildModuleName = `isotropy-build-${build.type}`;
+    const buildModule = await importModule(buildModuleName, dir);
+    return buildModule
+      ? buildModule.run()
+      : exception(
+          `Don't know how to build ${
+            build.type
+          }. Try npm install ${buildModuleName}?`
+        );
   }
+
+  return await Promise.all(module.builds.map(x => build(x)));
 }
 
-export async function run(args: string[]) {}
+export async function buildAllModules(dir: string, config: IsotropyConfig) {
+  // Find all services that need to run. Build all dependant modules.
+  const modules = config.services.reduce(
+    (acc, svc) => acc.concat(svc.modules),
+    [] as string[]
+  );
+
+  return await Promise.all(
+    modules.map(moduleName => buildModule(moduleName, dir, config))
+  );
+}
+
+export async function run(args: Arguments, cwd: string) {
+  const dir = typeof args._[0] !== "undefined" ? path.resolve(args._[0]) : cwd;
+  const config = await read(dir);
+  return await buildAllModules(dir, config);
+}
