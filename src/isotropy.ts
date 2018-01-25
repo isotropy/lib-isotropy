@@ -20,54 +20,7 @@ export interface ServiceConfig {
   modules: string[];
 }
 
-export interface HttpServiceLocation {
-  type: string;
-  location: string;
-}
-
-export interface HttpServiceNodeJSLocation extends HttpServiceLocation {
-  type: "nodejs";
-  main: string;
-}
-
-export interface HttpServiceStaticLocation extends HttpServiceLocation {
-  type: "static";
-  path: string;
-}
-
-export interface HttpServiceConfig extends ServiceConfig {
-  locations: HttpServiceLocation[];
-}
-
-export interface BuildTask {
-  type: string;
-}
-
-export interface TypeScriptCompileTask extends BuildTask {
-  type: "typescript";
-  output: string;
-  bundle?: boolean;
-}
-
 export interface ConnectionConfig {}
-
-export interface WebdiskConnection extends ConnectionConfig {
-  type: "webdisk";
-  path: string;
-  disk: string;
-}
-
-export interface DbConnection extends ConnectionConfig {
-  type: "db";
-  path: string;
-  db: string;
-}
-
-export interface RedisConnection extends ConnectionConfig {
-  type: "redis";
-  path: string;
-  db: string;
-}
 
 export interface BuildConfig {
   type: string
