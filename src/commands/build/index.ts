@@ -4,17 +4,13 @@ import path from "path";
 import { read } from "../../config";
 import exception from "../../exception";
 import importModule from "../../import-module";
-import { IsotropyConfig, TaskPlugin, BuildConfig, Arguments } from "../../isotropy";
+import { IsotropyConfig, TaskPlugin, BuildConfig, Arguments, ModuleConfig } from "../../isotropy";
 
 async function buildModule(
-  moduleName: string,
+  module: ModuleConfig,
   dir: string,
   config: IsotropyConfig
 ) {
-  const module =
-    config.modules.find(m => m.name === moduleName) ||
-    exception(`The module ${moduleName} was not found.`);
-
   async function build(build: BuildConfig) {
     const buildModuleName = `isotropy-build-${build.type}`;
     const buildModule = await importModule(buildModuleName, dir);
@@ -31,14 +27,8 @@ async function buildModule(
 }
 
 export async function buildAllModules(dir: string, config: IsotropyConfig) {
-  // Find all services that need to run. Build all dependant modules.
-  const modules = config.services.reduce(
-    (acc, svc) => acc.concat(svc.modules),
-    [] as string[]
-  );
-
   return await Promise.all(
-    modules.map(moduleName => buildModule(moduleName, dir, config))
+    config.modules.map(x => buildModule(x, dir, config))
   );
 }
 

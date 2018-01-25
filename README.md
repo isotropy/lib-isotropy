@@ -56,10 +56,6 @@ services:
   - name: server
     nodes: 2
     type: http
-    modules:
-      - static
-      - client
-      - server
     locations:
       - location: /
         type: nodejs
@@ -70,8 +66,6 @@ services:
   - name: auth-server
     nodes: 1
     type: http
-    modules:
-      - auth-server
     locations:
       - location: /
         type: nodejs

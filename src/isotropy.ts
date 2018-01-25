@@ -88,7 +88,7 @@ export type IsotropyConfig = {
   modules: ModuleConfig[];
 };
 
-export type Command = (args: Arguments, cwd: string) => Promise<void>;
+export type Command = (args: Arguments, cwd: string) => Promise<any>;
 
 export interface TaskPlugin {
   run: Command;
@@ -107,7 +107,7 @@ export default async function(args: string[], cwd: string) {
     };
   
     const command = args[0];
-
+    
     commands[command](yargs(args), cwd);
   } else {
     console.log("Missing argument. Type 'isotropy help' for help.");
