@@ -1,29 +1,36 @@
-import fs from "fs";
-import os from "os";
-import path from "path";
+import * as fse from "fs-extra";
+import * as path from "path";
 import { read } from "../../config";
 import exception from "../../exception";
 import importModule from "../../import-module";
-import { IsotropyConfig, TaskPlugin, BuildConfig, Arguments, ModuleConfig } from "../../isotropy";
+import {
+  IsotropyConfig,
+  TaskPlugin,
+  BuildConfig,
+  Arguments,
+  ModuleConfig
+} from "../../isotropy";
 
 async function buildModule(
   module: ModuleConfig,
   dir: string,
   config: IsotropyConfig
 ) {
-  async function build(build: BuildConfig) {
-    const buildModuleName = `isotropy-build-${build.type}`;
+  async function build(moduleName: string, buildConfig: BuildConfig) {
+    const buildModuleName = `isotropy-build-${buildConfig.type}`;
     const buildModule = await importModule(buildModuleName, dir);
-    return buildModule
-      ? buildModule.run()
+    const moduleDir = path.join(dir, moduleName);
+    const result = buildModule
+      ? await buildModule.default(moduleDir, buildConfig, [], { fse })
       : exception(
           `Don't know how to build ${
-            build.type
+            buildConfig.type
           }. Try npm install ${buildModuleName}?`
         );
+    return result;
   }
 
-  return await Promise.all(module.builds.map(x => build(x)));
+  return await Promise.all(module.builds.map(x => build(module.name, x)));
 }
 
 export async function buildAllModules(dir: string, config: IsotropyConfig) {
@@ -33,7 +40,8 @@ export async function buildAllModules(dir: string, config: IsotropyConfig) {
 }
 
 export async function run(args: Arguments, cwd: string) {
-  const dir = typeof args._[0] !== "undefined" ? path.resolve(args._[0]) : cwd;
+  const dir =
+    typeof args.items[1] !== "undefined" ? path.resolve(args.items[1]) : cwd;
   const config = await read(dir);
   return await buildAllModules(dir, config);
 }

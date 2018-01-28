@@ -30,7 +30,7 @@ export async function runAllServices(dir: string, config: IsotropyConfig) {
 }
 
 export async function run(args: Arguments, cwd: string) {
-  const dir = typeof args._[0] !== "undefined" ? path.resolve(args._[0]) : cwd;
+  const dir = typeof args.items[1] !== "undefined" ? path.resolve(args.items[1]) : cwd;
   const config = await read(dir);
   return await runAllServices(dir, config);
 }

@@ -5,12 +5,8 @@ import * as config from "./config";
 import yargs = require("yargs-parser");
 
 export interface Arguments {
-  /** Non-option arguments */
-  _: string[];
-  /** The script name or node command */
-  $0: string;
-  /** All remaining options */
-  [argName: string]: any;
+  items: string[];
+  named: { [argName: string]: any };
 }
 
 export interface ServiceConfig {
@@ -23,12 +19,12 @@ export interface ServiceConfig {
 export interface ConnectionConfig {}
 
 export interface BuildConfig {
-  type: string
+  type: string;
 }
 
 export interface ModuleConfig {
   name: string;
-  builds: BuildConfig[]
+  builds: BuildConfig[];
   connections?: ConnectionConfig[];
 }
 
@@ -51,19 +47,17 @@ type Commands = {
   [key: string]: Command;
 };
 
-export default async function(args: string[], cwd: string) {
-  if (args.length) {
+export default async function(args: Arguments, cwd: string) {
+  if (args.items.length) {
     const commands: Commands = {
       help: help.run,
       build: build.run,
       run: run.run
     };
-  
-    const command = args[0];
-    
-    commands[command](yargs(args), cwd);
+
+    const command = args.items[0];
+    return await commands[command](args, cwd);
   } else {
     console.log("Missing argument. Type 'isotropy help' for help.");
-  }  
+  }
 }
-

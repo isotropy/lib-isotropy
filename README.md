@@ -8,10 +8,20 @@ npm i -g isotropy
 
 ### Commands
 
-Initialize a project. The directory must not exist.
+Initialize a project with a default "hello world" template.
+If the dir option is omitted, the current directory is used.
 
 ```bash
 isotropy init <dir>
+```
+
+Init with a specific template.
+
+```bash
+isotropy init <dir> -t <git_url>
+
+#example
+isotropy init -t https://github.com/isotropy/hello-world
 ```
 
 Run a project from the current directory in dev mode locally.

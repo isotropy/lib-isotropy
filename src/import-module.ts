@@ -17,6 +17,6 @@ async function exists(somePath: string) {
 export default async function(moduleName: string, currentDir: string) {
   const moduleDir = path.join(currentDir, "node_modules", moduleName);
   const module = await exists(moduleDir) ? require(moduleDir)
-  : require(moduleDir);
+  : require(moduleName);
   return module || exception(`The module ${moduleName} was not found.`) 
 }
