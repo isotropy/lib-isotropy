@@ -21,7 +21,7 @@ async function buildModule(
     const buildModule = await importModule(buildModuleName, dir);
     const moduleDir = path.join(dir, moduleName);
     const result = buildModule
-      ? await buildModule.default(moduleDir, buildConfig, [], { fse })
+      ? await buildModule.default(moduleDir, buildConfig, { fse })
       : exception(
           `Don't know how to build ${
             buildConfig.type
@@ -30,7 +30,9 @@ async function buildModule(
     return result;
   }
 
-  return await Promise.all(module.builds.map(x => build(module.name, x)));
+  return module.builds
+    ? await Promise.all(module.builds.map(x => build(module.name, x)))
+    : [];
 }
 
 export async function buildAllModules(dir: string, config: IsotropyConfig) {

@@ -11,7 +11,7 @@
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
 //      "args": ["--no-timeouts", "dist/test/test.js"],
-      "args": ["--no-timeouts", "dist/cli.js", "build", "../hello-world"],
+      "args": ["--no-timeouts", "dist/cli.js", "run", "../hello-world"],
       "cwd": "${workspaceRoot}",
       "preLaunchTask": "build",
       "env": {

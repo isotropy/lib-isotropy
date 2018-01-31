@@ -1,2 +1,8 @@
 import "mocha";
-import "should";
+import should = require("should")
+
+describe("isotropy", async () => {
+  it("builds" , async () => {
+    
+  });
+})

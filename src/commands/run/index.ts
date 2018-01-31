@@ -1,4 +1,4 @@
-import path from "path";
+import* as path from "path";
 import { Arguments, IsotropyConfig, ServiceConfig } from "../../isotropy";
 import { read } from "../../config";
 import { buildAllModules } from "../build";
@@ -6,14 +6,18 @@ import exception from "../../exception";
 import importModule from "../../import-module";
 
 async function runService(
-  service: ServiceConfig,
   dir: string,
+  service: ServiceConfig,
   config: IsotropyConfig
 ) {
   const serviceName = `isotropy-service-${service.type}`;
   const serviceModule = await importModule(serviceName, dir);
+  const fn = serviceModule.default || serviceModule;
   return serviceModule
-    ? serviceModule.run()
+    ? await fn(
+      dir,
+      service
+    )
     : exception(
         `Don't know how to execute ${
           service.type
@@ -25,7 +29,7 @@ export async function runAllServices(dir: string, config: IsotropyConfig) {
   const buildResult = await buildAllModules(dir, config);
 
   return await Promise.all(
-    config.services.map(x => runService(x, dir, config))
+    config.services.map(x => runService(dir, x, config))
   );
 }
 

@@ -1,0 +1,25 @@
+name: Hello World
+version: "1.0.0"
+schema: "1.0"
+git: https://github.com/isotropy/hello-world
+services:
+  - name: server
+    type: http
+    locations:
+      - location: /
+        type: nodejs
+        main: server/dist/index.js
+      - location: /static
+        type: static
+        path: static
+      - location: /client
+        type: static
+        path: client/dist
+modules:
+  - name: static
+  - name: client
+    builds:
+      - type: typescript
+  - name: server
+    builds:
+      - type: typescript
