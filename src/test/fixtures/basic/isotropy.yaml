@@ -5,6 +5,7 @@ git: https://github.com/isotropy/hello-world
 services:
   - name: server
     type: http
+    listen: false
     locations:
       - location: /
         type: nodejs
