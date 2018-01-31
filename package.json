@@ -23,10 +23,14 @@
     "yargs-parser": "^9.0.2"
   },
   "devDependencies": {
+    "@types/koa": "^2.0.43",
     "@types/mocha": "^2.2.44",
     "@types/should": "^11.2.0",
+    "@types/supertest": "^2.0.4",
+    "koa": "^2.4.1",
     "mocha": "*",
-    "should": "*"
+    "should": "*",
+    "supertest": "^3.0.0"
   },
   "license": "MIT"
 }

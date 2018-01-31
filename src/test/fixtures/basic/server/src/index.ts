@@ -7,7 +7,7 @@ app.addRoutes([
     "GET",
     "/hello",
     async ctx => {
-      ctx.body = "hello, world";
+      ctx.body = "hello, world!";
     }
   ]
 ]);
