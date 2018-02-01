@@ -1,0 +1,7 @@
+{
+  "name": "hello-world-server",
+  "private": true,
+  "dependencies": {
+    "isotropy-webserver": "0.0.5"
+  }
+}
