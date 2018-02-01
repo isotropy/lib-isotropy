@@ -1,15 +1,15 @@
 import * as fse from "fs-extra";
 import * as path from "path";
-import { read } from "../../config";
-import exception from "../../exception";
-import importModule from "../../import-module";
+import { read } from "../config";
+import exception from "../exception";
+import importModule from "../import-module";
 import {
   IsotropyConfig,
   TaskPlugin,
   BuildConfig,
   Arguments,
   ModuleConfig
-} from "../../isotropy";
+} from "../isotropy";
 
 async function buildModule(
   module: ModuleConfig,

@@ -1,9 +1,9 @@
 import* as path from "path";
-import { Arguments, IsotropyConfig, ServiceConfig } from "../../isotropy";
-import { read } from "../../config";
-import { buildAllModules } from "../build";
-import exception from "../../exception";
-import importModule from "../../import-module";
+import { Arguments, IsotropyConfig, ServiceConfig } from "../isotropy";
+import { read } from "../config";
+import { buildAllModules } from "./build";
+import exception from "../exception";
+import importModule from "../import-module";
 
 async function runService(
   dir: string,
