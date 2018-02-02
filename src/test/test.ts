@@ -15,34 +15,39 @@ interface HttpService {
 }
 
 describe("isotropy", async () => {
-  it("builds", async () => {
-    const projPath = path.join(cwd, "test/fixtures/basic");
-    const result = await isotropy(
-      { items: ["build", projPath], named: {} },
-      cwd
-    );
-    ["client/dist/index.js", "server/dist/index.js"].forEach(p =>
-      fs.existsSync(path.join(projPath, p)).should.be.true()
-    );
-  });
+  it("inits", async () => {
+    const projPath = path.join(cwd, "test/fixtures/hello");
+    const apps = await isotropy({ items: ["init", projPath], named: {} }, projPath);
+  }).timeout(25000);
 
-  it("runs", async () => {
-    const projPath = path.join(cwd, "test/fixtures/basic");
-    const apps = (await isotropy(
-      { items: ["run", projPath], named: {} },
-      cwd
-    )) as HttpService[];
+  // it("builds", async () => {
+  //   const projPath = path.join(cwd, "test/fixtures/basic");
+  //   const result = await isotropy(
+  //     { items: ["build", projPath], named: {} },
+  //     cwd
+  //   );
+  //   ["client/dist/index.js", "server/dist/index.js"].forEach(p =>
+  //     fs.existsSync(path.join(projPath, p)).should.be.true()
+  //   );
+  // });
 
-    await Promise.all(
-      apps.map(async app => {
-        const server = app.listen();
-        const response = await request(server)
-          .get(`/hello`)
-          .expect(200);
+  // it("runs", async () => {
+  //   const projPath = path.join(cwd, "test/fixtures/basic");
+  //   const apps = (await isotropy(
+  //     { items: ["run", projPath], named: {} },
+  //     cwd
+  //   )) as HttpService[];
 
-        response.text.should.equal("hello, world!");
-        server.close();
-      })
-    );
-  });
+  //   await Promise.all(
+  //     apps.map(async app => {
+  //       const server = app.listen();
+  //       const response = await request(server)
+  //         .get(`/hello`)
+  //         .expect(200);
+
+  //       response.text.should.equal("hello, world!");
+  //       server.close();
+  //     })
+  //   );
+  // });
 });

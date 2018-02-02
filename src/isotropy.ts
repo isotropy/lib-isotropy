@@ -1,12 +1,12 @@
-import * as help from "./commands/help";
 import * as build from "./commands/build";
+import * as help from "./commands/help";
+import * as init from "./commands/init";
 import * as run from "./commands/run";
 import * as config from "./config";
-import yargs = require("yargs-parser");
 
 export interface Arguments {
   items: string[];
-  named: { [argName: string]: any };
+  named: { [argName: string]: string };
 }
 
 export interface ServiceConfig {
@@ -50,8 +50,9 @@ type Commands = {
 export default async function(args: Arguments, cwd: string) {
   if (args.items.length) {
     const commands: Commands = {
-      help: help.run,
       build: build.run,
+      help: help.run,
+      init: init.run,
       run: run.run
     };
 

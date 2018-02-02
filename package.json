@@ -13,14 +13,17 @@
   "main": "dist/isotropy.js",
   "types": "dist/isotropy.d.ts",
   "dependencies": {
+    "@types/download": "^6.2.1",
     "@types/fs-extra": "^5.0.0",
     "@types/js-yaml": "^3.10.1",
     "@types/node": "^9.3.0",
+    "@types/unzip": "^0.1.0",
+    "download": "^6.2.5",
     "fs-extra": "^5.0.0",
     "isotropy-build-typescript": "^0.0.6",
     "isotropy-service-http": "^0.0.5",
     "js-yaml": "^3.10.0",
-    "yargs-parser": "^9.0.2"
+    "unzip": "^0.1.11"
   },
   "devDependencies": {
     "@types/koa": "^2.0.43",
