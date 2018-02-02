@@ -20,34 +20,34 @@ describe("isotropy", async () => {
     const apps = await isotropy({ items: ["init", projPath], named: {} }, projPath);
   }).timeout(25000);
 
-  // it("builds", async () => {
-  //   const projPath = path.join(cwd, "test/fixtures/basic");
-  //   const result = await isotropy(
-  //     { items: ["build", projPath], named: {} },
-  //     cwd
-  //   );
-  //   ["client/dist/index.js", "server/dist/index.js"].forEach(p =>
-  //     fs.existsSync(path.join(projPath, p)).should.be.true()
-  //   );
-  // });
+  it("builds", async () => {
+    const projPath = path.join(cwd, "test/fixtures/basic");
+    const result = await isotropy(
+      { items: ["build", projPath], named: {} },
+      cwd
+    );
+    ["client/dist/index.js", "server/dist/index.js"].forEach(p =>
+      fs.existsSync(path.join(projPath, p)).should.be.true()
+    );
+  });
 
-  // it("runs", async () => {
-  //   const projPath = path.join(cwd, "test/fixtures/basic");
-  //   const apps = (await isotropy(
-  //     { items: ["run", projPath], named: {} },
-  //     cwd
-  //   )) as HttpService[];
+  it("runs", async () => {
+    const projPath = path.join(cwd, "test/fixtures/basic");
+    const apps = (await isotropy(
+      { items: ["run", projPath], named: {} },
+      cwd
+    )) as HttpService[];
 
-  //   await Promise.all(
-  //     apps.map(async app => {
-  //       const server = app.listen();
-  //       const response = await request(server)
-  //         .get(`/hello`)
-  //         .expect(200);
+    await Promise.all(
+      apps.map(async app => {
+        const server = app.listen();
+        const response = await request(server)
+          .get(`/hello`)
+          .expect(200);
 
-  //       response.text.should.equal("hello, world!");
-  //       server.close();
-  //     })
-  //   );
-  // });
+        response.text.should.equal("hello, world!");
+        server.close();
+      })
+    );
+  });
 });

@@ -59,8 +59,8 @@ isotropy deploy <dir> -c <cloud_name>
 
 ```yaml
 name: Simple Todos
+version: "0.0.1"
 schema: "1.0"
-version: "1.0.0"
 git: https://github.com/isotropy/simple-todos
 services:
   - name: server

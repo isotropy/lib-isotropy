@@ -5,6 +5,7 @@ import * as fse from "fs-extra";
 import download = require("download");
 import unzip = require("unzip");
 import { tmpdir } from "os";
+import * as config from "../config";
 import { Arguments } from "../isotropy";
 
 export function run(args: Arguments, cwd: string) {
@@ -29,15 +30,26 @@ export function run(args: Arguments, cwd: string) {
     );
     download(url)
       .pipe(unzip.Extract({ path: tmpDir }))
-      .on("close", () => {
+      .on("close", async () => {
         const [unzippedDir] = fse.readdirSync(tmpDir);
         const destDir = path.join(tmpDir, unzippedDir);
         fse.copySync(destDir, dir);
-        
-        //Read metadata 
-        
-        const result = child_process.execSync("npm install", { cwd: dir })
-        console.log(result.toString())
+
+        //Read metadata
+        const projConf = await config.read(dir);
+        const jsModules = projConf.modules.filter(
+          m =>
+            m.builds &&
+            m.builds.some(b => ["typescript", "javascript"].includes(b.type))
+        );
+
+        jsModules.forEach(m => {
+          const moduleDir = path.join(dir, m.name);
+          const result = child_process.execSync("npm install", {
+            cwd: moduleDir
+          });
+        });
+
         resolve();
       });
   });
