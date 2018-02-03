@@ -1,5 +1,5 @@
 import* as path from "path";
-import { Arguments, IsotropyConfig, ServiceConfig } from "../isotropy";
+import { Arguments, IsotropyConfig, ServiceConfig } from "../lib-isotropy";
 import { read } from "../config";
 import { buildAllModules } from "./build";
 import exception from "../exception";

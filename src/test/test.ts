@@ -4,7 +4,7 @@ import * as path from "path";
 import * as fse from "fs-extra";
 import request = require("supertest");
 import koa from "koa";
-import isotropy from "../isotropy";
+import isotropy from "../lib-isotropy";
 import { Server } from "http";
 
 const cwd = path.join(__dirname, "../");

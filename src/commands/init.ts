@@ -7,7 +7,7 @@ import unzip = require("unzip");
 import { tmpdir } from "os";
 import exception from "../exception";
 import * as config from "../config";
-import { Arguments } from "../isotropy";
+import { Arguments } from "../lib-isotropy";
 
 export function run(args: Arguments, cwd: string) {
   return new Promise((resolve, reject) => {

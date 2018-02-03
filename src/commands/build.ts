@@ -9,7 +9,7 @@ import {
   BuildConfig,
   Arguments,
   ModuleConfig
-} from "../isotropy";
+} from "../lib-isotropy";
 
 async function buildModule(
   module: ModuleConfig,
