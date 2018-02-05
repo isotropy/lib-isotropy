@@ -20,8 +20,12 @@ async function buildModule(
     const buildModuleName = `isotropy-build-${buildConfig.type}`;
     const buildModule = await importModule(buildModuleName, dir);
     const moduleDir = path.join(dir, moduleName);
+    const isotropyHost = {
+      log: (msg: string) => console.log(msg),
+      fse
+    };
     const result = buildModule
-      ? await buildModule.default(moduleDir, buildConfig, { fse })
+      ? await buildModule.default(moduleDir, buildConfig, isotropyHost)
       : exception(
           `Don't know how to build ${
             buildConfig.type
